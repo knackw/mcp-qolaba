@@ -74,3 +74,10 @@ dmypy.json
 /server.py
 /client.py
 /test.json
+/.claude/
+/.cursor/
+/.gemini/
+/.github/
+/.junie/
+/.qwen/
+.mcp.json
