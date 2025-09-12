@@ -75,7 +75,6 @@ dmypy.json
 /client.py
 /test.json
 /.claude/
-/.cursor/
 /.gemini/
 /.github/
 /.junie/
