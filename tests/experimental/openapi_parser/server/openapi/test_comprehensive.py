@@ -697,8 +697,11 @@ class TestOpenAPIComprehensive:
         end_time = time.time()
 
         # Should be very fast (no code generation)
+        import sys
         initialization_time = end_time - start_time
-        assert initialization_time < 0.1  # Should be under 100ms
+        # Allow slightly higher threshold on Windows CI where startup is slower
+        threshold = 0.1 if sys.platform != "win32" else 0.2
+        assert initialization_time < threshold
 
         # Verify server was created correctly
         assert server is not None

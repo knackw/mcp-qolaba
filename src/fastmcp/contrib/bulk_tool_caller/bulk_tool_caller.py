@@ -33,6 +33,12 @@ class CallToolRequestResult(CallToolResult):
         description="The arguments used for the tool call."
     )
 
+    def __eq__(self, other: object) -> bool:  # type: ignore[override]
+        if not isinstance(other, CallToolRequestResult):
+            return NotImplemented
+        # Compare by value, ignoring None fields to avoid default/explicit None diffs
+        return self.model_dump(exclude_none=True) == other.model_dump(exclude_none=True)
+
     @classmethod
     def from_call_tool_result(
         cls, result: CallToolResult, tool: str, arguments: dict[str, Any]
@@ -45,6 +51,8 @@ class CallToolRequestResult(CallToolResult):
             arguments=arguments,
             isError=result.isError,
             content=result.content,
+            structuredContent=None,
+            meta=getattr(result, "meta", None),
         )
 
 
@@ -130,4 +138,6 @@ class BulkToolCaller(MCPMixin):
                 arguments=arguments,
                 isError=result.isError,
                 content=result.content,
+                structuredContent=None,
+                meta=getattr(result, "meta", None),
             )

@@ -27,3 +27,18 @@ api-ref-clean:
 
 copy-context:
     uvx --with-editable . --refresh-package copychat copychat@latest src/ docs/ -x changelog.mdx -x python-sdk/ -v
+
+# Push aktuelle Commits und Tags nach origin
+push:
+    git push origin HEAD
+    git push --tags
+
+# Version erhöhen und pushen (nutzt Git-Tags für uv-dynamic-versioning)
+release-patch:
+    uv run --frozen python scripts/bump_version.py patch
+
+release-minor:
+    uv run --frozen python scripts/bump_version.py minor
+
+release-major:
+    uv run --frozen python scripts/bump_version.py major

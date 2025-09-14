@@ -1,66 +1,162 @@
-Anweisung zur Erstellung einer PLAN.md für den Qolaba API MCP Server
-Deine Rolle und Aufgabe
-Du bist ein erfahrener Softwarearchitekt und technischer Projektmanager. Deine Aufgabe ist es, den gesamten Projektplan für den "Qolaba API MCP Server" sorgfältig zu analysieren, technische Umsetzungsschritte zu identifizieren und einen detaillierten, umsetzbaren Aufgabenplan zu erstellen. Das Ergebnis speicherst du als PLAN.md-Datei im Verzeichnis docs/.
+# Projektplan: Qolaba API MCP Server
 
-Analyse-Richtlinien
-Führe eine umfassende Analyse durch und achte dabei auf folgende Bereiche, basierend auf dem Projektplan:
+<Info>
+Der detaillierte Aufgaben- und Fortschritts-Status wird zentral in `docs/PLAN.md` gepflegt. Dieses Dokument beschreibt die Phasen und Ziele auf hoher Ebene und verweist für Checkboxen/Status immer auf den Plan.
+</Info>
 
-Grundlagen & Einrichtung: Git-Repository, Python-Umgebung, Klonen des Frameworks, Abhängigkeiten und Konfigurationsmanagement.
+Dieser Plan beschreibt die Schritte zur Entwicklung eines robusten und effizienten MCP (Master Control Program)-Servers, der als Brücke zur Qolaba-API fungiert. Wir nutzen das fastmcp-Framework als Grundlage, um die Entwicklungszeit zu beschleunigen.
 
-Kernfunktionalität & API-Integration: API-Client-Modul, Fehlerbehandlung, MCP-Endpunkte, Daten-Serialisierung und -Validierung.
+## Phase 1: Grundlagen und Einrichtung (Woche 1)
 
-Testing & Qualitätssicherung: Unit-Tests, Integrationstests, Mocking-Strategien, Code-Reviews und Refactoring.
+In dieser initialen Phase schaffen wir die Basis für das gesamte Projekt.
 
-Deployment & Dokumentation: Docker-Containerisierung, CI/CD-Pipelines, Monitoring, Logging und technische Dokumentation.
+## API Dokumentation
+https://docs.qolaba.ai/api-platform
+https://docs.qolaba.ai/api-platform/text-to-image
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/text-to-image
+https://docs.qolaba.ai/api-platform/image-to-image
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/image-to-image
+https://docs.qolaba.ai/api-platform/inpainting
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/inpainting
+https://docs.qolaba.ai/api-platform/replace-background
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/replace-background
+https://docs.qolaba.ai/api-platform/text-to-speech
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/text-to-speech
+https://docs.qolaba.ai/api-platform/task-status
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/get-status
+https://docs.qolaba.ai/api-platform/streamchat
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/streamchat
+https://docs.qolaba.ai/api-platform/chat
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/chat-api
+https://docs.qolaba.ai/api-platform/store-file-in-vector-database
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/store-file-in-vector-database
+https://docs.qolaba.ai/api-platform/pricing
 
-Technologie-Stack: Python, fastmcp-Framework, Pydantic, Docker, GitHub Actions.
+### Anforderungsanalyse
 
-Struktur und Inhalt der zu erstellenden PLAN.md
-Erstelle die PLAN.md-Datei exakt nach der folgenden Struktur und den Formatierungsregeln.
+**Ziel:** Vollständiges Verständnis der Qolaba-API.
 
-BEGINN DES INHALTS FÜR PLAN.md
-Titel und Metadaten
-Erstelle einen Haupttitel wie "# Qolaba API MCP Server Implementierungsplan" und einen Block mit folgenden Metadaten:
+**Aktionen:**
 
-Last Updated: [Aktueller Monat und Jahr]
+- Sichtung der [Qolaba-API-Dokumentation](https://docs.qolaba.ai/api-platform).
+- Identifizierung der Schlüssel-Endpunkte (z.B. für Authentifizierung, Datenaustausch, Befehlsübermittlung).
+- Klärung der Authentifizierungsmechanismen (z.B. API-Keys, OAuth).
+- Analyse der Datenformate (JSON, XML, etc.).
 
-Project Status: [Deine Einschätzung der Umsetzungsreife, z.B. "Planungsphase"]
+### Setup der Entwicklungsumgebung
 
-Total Tasks: [Gesamtzahl der von dir erstellten Aufgaben]
+**Ziel:** Eine konsistente und isolierte Arbeitsumgebung schaffen.
 
-Analysis Date: [Aktueller Monat und Jahr]
+**Aktionen:**
 
-🔍 Analyse-Zusammenfassung
-Fasse deine Analyseergebnisse in einem kurzen Abschnitt zusammen. Liste die wichtigsten technischen Bereiche auf, die Aufmerksamkeit erfordern, basierend auf dem Projektplan.
+- Einrichten eines Git-Repositorys für die Versionskontrolle.
+- Erstellen einer virtuellen Python-Umgebung (z.B. mit venv).
+- Klonen des [fastmcp-Starter-Projekts](https://github.com/jlowin/fastmcp).
+- Installation der Basis-Abhängigkeiten aus `requirements.txt`.
 
-Aufgaben nach Priorität und Phase
-Gruppiere alle Aufgaben nach den folgenden vier Prioritätsstufen, die den Phasen des Projektplans entsprechen. Ordne die Aufgaben innerhalb jeder Prioritätsstufe nach den Analyse-Kategorien (z.B. "Grundlagen & Einrichtung", "Kernfunktionalität & API-Integration").
+### Konfigurationsmanagement
 
-## 🔴 Kritische Priorität (Woche 1)
+**Ziel:** Sicherstellen, dass sensible Daten wie API-Schlüssel sicher verwaltet werden.
 
-## 🟡 Hohe Priorität (Woche 2-3)
+**Aktionen:**
 
-## 🟢 Mittlere Priorität (Woche 4)
+- Implementierung einer Konfigurationslösung (z.B. über `.env`-Dateien und `python-dotenv`).
+- Einrichten von Konfigurationsprofilen für Entwicklung, Test und Produktion.
 
-## 🔵 Niedrige Priorität (Woche 5)
+## Phase 2: Kernfunktionalität und API-Integration (Woche 2-3)
 
-Aufgaben-Formatierung
-Jede einzelne Aufgabe MUSS diesem Format folgen:
-- [ ] **CATEGORY-XXX**: Kurze, prägnante Beschreibung der technischen Aufgabe
+Hier implementieren wir die Hauptlogik des MCP-Servers und die Anbindung an die Qolaba-API.
 
-[ ] ist die Checkbox.
+### API-Client-Modul
 
-CATEGORY ist ein Kürzel für die Kategorie (z.B., SETUP, API, MCP, DATA, TEST, QA, DEPLOY, DOCS).
+**Ziel:** Erstellung eines wiederverwendbaren Moduls für die Kommunikation mit der Qolaba-API.
 
-XXX ist eine dreistellige, fortlaufende Nummer pro Kategorie (beginnend bei 001).
+**Aktionen:**
 
-📋 Zusammenfassung der Aufgabenkategorien
-Erstelle eine Markdown-Tabelle, die die Anzahl der Aufgaben pro Kategorie und Priorität zusammenfasst. Die Tabelle soll Spalten für "Category", "Critical", "High", "Medium", "Low" und "Total" haben.
+- Entwicklung von Python-Funktionen oder einer Klasse, die die API-Anfragen kapselt (z.B. `get_data()`, `send_command()`).
+- Implementierung von Fehlerbehandlung und Logging für API-Anfragen (z.B. bei Timeouts oder 4xx/5xx-Fehlern).
+- Integration der Authentifizierungslogik.
 
-🎯 Implementierungsrichtlinien
-Füge einen Abschnitt mit Implementierungsrichtlinien hinzu, der die Priorisierungsregeln, technische Abhängigkeiten zwischen Aufgaben und Erfolgskriterien für das Projekt definiert.
+### MCP-Endpunkte entwickeln
 
-📝 Anmerkungen
-Füge einen abschließenden Abschnitt hinzu, der bekannte Herausforderungen (Current Technical Challenges), spezifische Umsetzungsempfehlungen (Technical Implementation Needed) und kritische Erfolgsfaktoren (Project Success Critical Factors) zusammenfasst.
+**Ziel:** Definition und Implementierung der MCP-Befehle basierend auf der fastmcp-Struktur.
 
-ENDE DES INHALTS FÜR PLAN.md
+**Aktionen:**
+
+- Analyse, welche Qolaba-Funktionen über MCP gesteuert werden sollen.
+- Erstellung von Befehls-Handlern innerhalb von fastmcp. Jeder Handler ruft die entsprechende Funktion im API-Client-Modul auf.
+- Validierung der eingehenden MCP-Befehle und deren Parameter.
+
+### Daten-Serialisierung und -Deserialisierung
+
+**Ziel:** Sicherstellen, dass Daten korrekt zwischen MCP und der Qolaba-API übersetzt werden.
+
+**Aktionen:**
+
+- Nutzung von Pydantic-Modellen (bereits in FastAPI/fastmcp integriert) zur Definition und Validierung der Datenstrukturen.
+- Implementierung von Logik zur Transformation der Daten, falls die Formate zwischen MCP und der API abweichen.
+
+## Phase 3: Testing und Qualitätssicherung (Woche 4)
+
+Qualitätssicherung ist entscheidend für einen stabilen Betrieb.
+
+### Unit-Tests
+
+**Ziel:** Testen einzelner Komponenten in Isolation.
+
+**Aktionen:**
+
+- Schreiben von Tests für das API-Client-Modul mit Mocking der externen API, um Abhängigkeiten zu vermeiden (`pytest` und `unittest.mock`).
+- Testen der MCP-Befehls-Handler auf korrekte Logik und Parameterverarbeitung.
+
+### Integrationstests
+
+**Ziel:** Sicherstellen, dass das Gesamtsystem wie erwartet funktioniert.
+
+**Aktionen:**
+
+- Aufsetzen einer Test-Datenbank oder Nutzung eines Sandbox-Accounts der Qolaba-API.
+- Schreiben von Tests, die den gesamten Flow von einem MCP-Befehl bis zur (gemockten oder realen) API-Antwort abdecken.
+
+### Code-Review und Refactoring
+
+**Ziel:** Verbesserung der Code-Qualität und Lesbarkeit.
+
+**Aktionen:**
+
+- Durchführung von Code-Reviews im Team.
+- Refactoring von Code-Abschnitten zur Optimierung der Performance und Wartbarkeit.
+
+## Phase 4: Deployment und Dokumentation (Woche 5)
+
+In der letzten Phase wird der Server bereitgestellt und das Projekt dokumentiert.
+
+### Deployment-Strategie
+
+**Ziel:** Bereitstellung des MCP-Servers in einer Produktionsumgebung.
+
+**Aktionen:**
+
+- Containerisierung der Anwendung mit Docker.
+- Erstellung eines `Dockerfile` und `docker-compose.yml` für eine einfache Bereitstellung.
+- Auswahl einer Hosting-Plattform (z.B. ein Cloud-Anbieter wie AWS, Google Cloud oder ein On-Premise-Server).
+- Einrichtung von CI/CD-Pipelines (z.B. mit GitHub Actions) für automatisiertes Testen und Deployment.
+
+### Monitoring und Logging
+
+**Ziel:** Überwachung des Server-Zustands und schnelle Fehlerdiagnose.
+
+**Aktionen:**
+
+- Implementierung von strukturiertem Logging (z.B. mit `structlog`).
+- Einrichtung eines Monitoring-Tools (z.B. Prometheus, Grafana) zur Überwachung von Metriken wie Anfragen pro Sekunde und Fehlerraten.
+
+### Projektdokumentation
+
+**Ziel:** Sicherstellen, dass das Projekt verständlich und wartbar ist.
+
+**Aktionen:**
+
+- Erstellung einer `README.md` mit Setup-Anweisungen, Konfigurationsdetails und einer Übersicht der Architektur.
+- Dokumentation der implementierten MCP-Befehle und ihrer Parameter.
+- Kommentierung des Codes an kritischen Stellen.

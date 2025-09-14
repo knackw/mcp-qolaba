@@ -1,5 +1,6 @@
 import inspect
 import json
+import sys
 from pathlib import Path
 
 import pytest
@@ -118,7 +119,7 @@ class TestMCPConfig:
 
         mcp_config = MCPConfig(
             mcpServers={
-                "test_server": StdioMCPServer(command="python", args=[str(script_path)])
+                "test_server": StdioMCPServer(command=sys.executable, args=[str(script_path)])
             }
         )
         mcp_config.write_to_file(mcp_config_path)

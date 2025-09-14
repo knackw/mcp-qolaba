@@ -1,0 +1,138 @@
+# Prometheus configuration for Qolaba MCP Server monitoring
+# This configuration defines scraping targets, rules, and alerting for comprehensive monitoring
+
+global:
+  scrape_interval: 15s      # Set the scrape interval to every 15 seconds
+  evaluation_interval: 15s  # Evaluate rules every 15 seconds
+  external_labels:
+    monitor: 'qolaba-mcp-monitor'
+    environment: 'production'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'
+rule_files:
+  - "qolaba_mcp_rules.yml"
+
+# Scrape configuration for Qolaba MCP Server
+scrape_configs:
+  # Qolaba MCP Server metrics
+  - job_name: 'qolaba-mcp-server'
+    static_configs:
+      - targets: ['qolaba-mcp-server:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    honor_labels: true
+    params:
+      format: ['prometheus']
+    
+    # Relabeling to add instance information
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: qolaba-mcp-server:8000
+    
+    # Metric relabeling
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: 'qolaba_mcp_.*'
+        action: keep
+      - source_labels: [endpoint]
+        regex: '/metrics.*'
+        action: drop  # Don't scrape metrics about metrics endpoints to avoid noise
+
+  # Health check monitoring
+  - job_name: 'qolaba-mcp-health'
+    static_configs:
+      - targets: ['qolaba-mcp-server:8000']
+    metrics_path: '/health'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    
+    # Custom metric creation from health endpoint
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        target_label: __name__
+        regex: '(.*)'
+        replacement: 'qolaba_mcp_health_${1}'
+
+  # System metrics (if node_exporter is available)
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 15s
+    
+    # Only collect relevant system metrics
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: 'node_(cpu|memory|filesystem|network|load).*'
+        action: keep
+
+  # Container metrics (if cAdvisor is available)
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+    
+    # Filter container metrics for Qolaba MCP Server
+    metric_relabel_configs:
+      - source_labels: [container_label_com_docker_compose_service]
+        regex: 'qolaba-mcp-server'
+        action: keep
+      - source_labels: [__name__]
+        regex: 'container_(cpu|memory|network|fs).*'
+        action: keep
+
+  # Self-monitoring: Prometheus metrics
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 30s
+    
+    # Keep only essential Prometheus metrics
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: 'prometheus_(tsdb|rule|notification).*'
+        action: keep
+
+# Remote write configuration for long-term storage (optional)
+# remote_write:
+#   - url: "http://thanos-receiver:19291/api/v1/receive"
+#     queue_config:
+#       max_samples_per_send: 1000
+#       batch_send_deadline: 5s
+#       max_shards: 10
+
+# Storage configuration
+storage:
+  tsdb:
+    path: /prometheus/data
+    retention.time: 30d
+    retention.size: 10GB
+    
+    # Compaction settings
+    min_block_duration: 2h
+    max_block_duration: 25h
+    
+    # WAL settings
+    wal_compression: true
+
+# Web configuration
+web:
+  listen_address: '0.0.0.0:9090'
+  external_url: 'http://localhost:9090'
+  enable_lifecycle: true
+  enable_admin_api: true
+  
+  # CORS settings for Grafana integration
+  cors_origin: '.*'

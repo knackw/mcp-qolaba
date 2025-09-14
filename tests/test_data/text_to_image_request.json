@@ -1,0 +1,10 @@
+{
+  "prompt": "A majestic dragon flying over a medieval castle at sunset",
+  "model": "flux",
+  "width": 1024,
+  "height": 768,
+  "steps": 25,
+  "guidance_scale": 7.5,
+  "seed": 12345,
+  "negative_prompt": "blurry, low quality, distorted"
+}

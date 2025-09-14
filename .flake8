@@ -1,0 +1,56 @@
+[flake8]
+# Base configuration for flake8 linting
+max-line-length = 100
+max-complexity = 12
+exclude = 
+    .git,
+    __pycache__,
+    .venv,
+    venv,
+    .env,
+    env,
+    build,
+    dist,
+    .tox,
+    .coverage,
+    htmlcov,
+    .pytest_cache,
+    .mypy_cache,
+    migrations,
+    node_modules,
+    *.egg-info
+
+# Error codes to ignore
+ignore = 
+    # E203: whitespace before ':' (conflicts with black)
+    E203,
+    # W503: line break before binary operator (conflicts with black)
+    W503,
+    # E501: line too long (handled by black)
+    E501
+
+# Select specific error codes to check
+select = 
+    E,    # pycodestyle errors
+    W,    # pycodestyle warnings
+    F,    # pyflakes
+    C,    # mccabe complexity
+    B,    # flake8-bugbear
+    I,    # isort
+    N,    # pep8-naming
+
+per-file-ignores =
+    # Tests can have longer lines and unused imports
+    tests/*.py: E501, F401, F403, F405
+    # Init files can have unused imports
+    __init__.py: F401, F403
+    # Settings files can have longer lines
+    */settings/*.py: E501
+    # Migration files are auto-generated
+    */migrations/*.py: E501, F401
+
+# Docstring checking
+doctests = True
+statistics = True
+count = True
+show-source = True

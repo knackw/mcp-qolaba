@@ -1,0 +1,275 @@
+# Docker Compose configuration for Qolaba MCP Server
+# Provides complete local development environment with all dependencies
+
+version: '3.8'
+
+services:
+  # =============================================================================
+  # Main MCP Server Service
+  # =============================================================================
+  qolaba-mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+      args:
+        BUILD_DATE: ${BUILD_DATE:-now}
+        VCS_REF: ${VCS_REF:-dev}
+        VERSION: ${VERSION:-dev}
+    container_name: qolaba-mcp-server
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # MCP Server Configuration
+      - MCP_SERVER_HOST=0.0.0.0
+      - MCP_SERVER_PORT=8000
+      - MCP_SERVER_WORKERS=1
+      
+      # FastMCP Configuration
+      - FASTMCP_LOG_LEVEL=DEBUG
+      - FASTMCP_ENABLE_RICH_TRACEBACKS=1
+      - FASTMCP_TEST_MODE=1
+      
+      # Qolaba API Configuration
+      - QOLABA_API_KEY=${QOLABA_API_KEY:-your_api_key_here}
+      - QOLABA_BASE_URL=${QOLABA_BASE_URL:-https://api.qolaba.ai/v1}
+      - QOLABA_TIMEOUT=${QOLABA_TIMEOUT:-30}
+      - QOLABA_MAX_RETRIES=${QOLABA_MAX_RETRIES:-3}
+      
+      # Database Configuration (if using)
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/qolaba_mcp
+      - REDIS_URL=redis://redis:6379/0
+      
+      # Monitoring
+      - PROMETHEUS_METRICS_PORT=9090
+      
+    volumes:
+      # Source code for development hot reload
+      - ./src:/home/app/src:ro
+      - ./scripts:/home/app/scripts:ro
+      - ./tests:/home/app/tests:ro
+      - ./pyproject.toml:/home/app/pyproject.toml:ro
+      
+      # Configuration files
+      - ./.flake8:/home/app/.flake8:ro
+      - ./.coveragerc:/home/app/.coveragerc:ro
+      - ./.pre-commit-config.yaml:/home/app/.pre-commit-config.yaml:ro
+      
+      # Persistent data
+      - qolaba_logs:/home/app/logs
+      - qolaba_data:/home/app/data
+      
+      # Development tools
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      
+    depends_on:
+      - postgres
+      - redis
+      
+    networks:
+      - qolaba-network
+      
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # =============================================================================
+  # Database Service (PostgreSQL)
+  # =============================================================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: qolaba-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=qolaba_mcp
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql:ro
+    ports:
+      - "5432:5432"
+    networks:
+      - qolaba-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # =============================================================================
+  # Redis Cache Service
+  # =============================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: qolaba-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass redis_password
+    environment:
+      - REDIS_PASSWORD=redis_password
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - qolaba-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # =============================================================================
+  # Monitoring Services
+  # =============================================================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: qolaba-prometheus
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - qolaba-network
+    depends_on:
+      - qolaba-mcp-server
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: qolaba-grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    ports:
+      - "3000:3000"
+    networks:
+      - qolaba-network
+    depends_on:
+      - prometheus
+
+  # =============================================================================
+  # Development Tools
+  # =============================================================================
+  # Jupyter notebook for development and testing
+  jupyter:
+    image: jupyter/scipy-notebook:latest
+    container_name: qolaba-jupyter
+    restart: unless-stopped
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - GRANT_SUDO=yes
+    volumes:
+      - ./notebooks:/home/jovyan/notebooks
+      - ./src:/home/jovyan/src:ro
+      - jupyter_data:/home/jovyan
+    ports:
+      - "8888:8888"
+    networks:
+      - qolaba-network
+    profiles:
+      - development
+      - full
+
+  # Adminer for database management
+  adminer:
+    image: adminer:latest
+    container_name: qolaba-adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    networks:
+      - qolaba-network
+    depends_on:
+      - postgres
+    profiles:
+      - development
+      - full
+
+  # =============================================================================
+  # Testing Services
+  # =============================================================================
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: testing
+    container_name: qolaba-test-runner
+    environment:
+      - FASTMCP_TEST_MODE=1
+      - FASTMCP_LOG_LEVEL=DEBUG
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/qolaba_mcp_test
+      - REDIS_URL=redis://redis:6379/1
+    volumes:
+      - ./src:/home/app/src:ro
+      - ./tests:/home/app/tests:ro
+      - ./scripts:/home/app/scripts:ro
+      - test_results:/home/app/test-results
+      - coverage_reports:/home/app/htmlcov
+    networks:
+      - qolaba-network
+    depends_on:
+      - postgres
+      - redis
+    profiles:
+      - testing
+    command: ["python", "-m", "pytest", "tests/", "-v", "--cov=src/qolaba_mcp_server", "--cov-report=html"]
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  qolaba-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# =============================================================================
+# Volumes
+# =============================================================================
+volumes:
+  # Application data
+  qolaba_logs:
+    driver: local
+  qolaba_data:
+    driver: local
+    
+  # Database data
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+    
+  # Monitoring data
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+    
+  # Development data
+  jupyter_data:
+    driver: local
+    
+  # Test data
+  test_results:
+    driver: local
+  coverage_reports:
+    driver: local

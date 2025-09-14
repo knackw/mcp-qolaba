@@ -1,0 +1,21 @@
+{
+  "task_id": "task_tti_67890",
+  "status": "completed",
+  "progress": 100.0,
+  "result": {
+    "image_url": "https://cdn.qolaba.ai/images/dragon_castle_67890.jpg",
+    "image_data": null,
+    "metadata": {
+      "model": "flux",
+      "steps": 25,
+      "guidance_scale": 7.5,
+      "seed": 12345,
+      "width": 1024,
+      "height": 768,
+      "processing_time": 45.2
+    }
+  },
+  "created_at": "2025-09-13T19:45:00Z",
+  "updated_at": "2025-09-13T19:45:45Z",
+  "estimated_time_remaining": null
+}

@@ -1,0 +1,50 @@
+[run]
+source = src/qolaba_mcp_server
+branch = True
+omit = 
+    */tests/*
+    */test_*
+    */venv/*
+    */virtualenv/*
+    */__pycache__/*
+    */migrations/*
+    */node_modules/*
+    setup.py
+    */settings/local.py
+
+[report]
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    # Have to re-enable the standard pragma
+    pragma: no cover
+
+    # Don't complain about missing debug-only code:
+    def __repr__
+    if self\.debug
+
+    # Don't complain if tests don't hit defensive assertion code:
+    raise AssertionError
+    raise NotImplementedError
+
+    # Don't complain if non-runnable code isn't run:
+    if 0:
+    if __name__ == .__main__.:
+    if TYPE_CHECKING:
+
+    # Don't complain about abstract methods
+    @(abc\.)?abstractmethod
+
+ignore_errors = True
+show_missing = True
+precision = 2
+
+[html]
+directory = htmlcov
+title = Qolaba MCP Server Coverage Report
+
+[xml]
+output = coverage.xml
+
+# Minimum coverage thresholds for critical modules
+# api_client and mcp_handler modules must have >80% coverage
+# as specified in project requirements

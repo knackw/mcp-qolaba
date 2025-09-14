@@ -80,3 +80,6 @@ dmypy.json
 /.junie/
 /.qwen/
 .mcp.json
+CLAUDE.md
+GEMINI.md
+QWEN.md

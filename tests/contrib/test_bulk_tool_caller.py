@@ -97,15 +97,18 @@ async def test_call_tool_bulk_single_success(bulk_caller_live: BulkToolCaller):
         ECHO_TOOL_NAME, [{"arg1": "value1"}]
     )
 
-    assert results == snapshot(
-        [
-            CallToolRequestResult(
-                content=[TextContent(type="text", text="value1")],
-                tool="echo_tool",
-                arguments={"arg1": "value1"},
-            )
-        ]
-    )
+    assert results == [
+        CallToolRequestResult(
+            meta=None,
+            content=[
+                TextContent(type="text", text="value1", annotations=None, meta=None)
+            ],
+            structuredContent=None,
+            isError=False,
+            tool="echo_tool",
+            arguments={"arg1": "value1"},
+        )
+    ]
 
 
 async def test_call_tool_bulk_multiple_success(bulk_caller_live: BulkToolCaller):
@@ -193,15 +196,18 @@ async def test_call_tools_bulk_single_success(bulk_caller_live: BulkToolCaller):
 
     results = await bulk_caller_live.call_tools_bulk(tool_calls)
 
-    assert results == snapshot(
-        [
-            CallToolRequestResult(
-                content=[TextContent(type="text", text="value1")],
-                tool="echo_tool",
-                arguments={"arg1": "value1"},
-            )
-        ]
-    )
+    assert results == [
+        CallToolRequestResult(
+            meta=None,
+            content=[
+                TextContent(type="text", text="value1", annotations=None, meta=None)
+            ],
+            structuredContent=None,
+            isError=False,
+            tool="echo_tool",
+            arguments={"arg1": "value1"},
+        )
+    ]
 
 
 async def test_call_tools_bulk_multiple_success(bulk_caller_live: BulkToolCaller):

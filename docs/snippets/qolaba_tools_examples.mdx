@@ -1,0 +1,202 @@
+## Qolaba MCP Tool Beispiele (Request/Response)
+
+Diese Beispiele zeigen typische Aufrufe der bereitgestellten MCP-Tools und vereinfachte Beispielantworten. Felder können je nach Backend-Version variieren.
+
+### text_to_image
+
+Request
+
+```json
+{
+  "prompt": "a red fox in a forest, cinematic lighting",
+  "model": "flux",
+  "width": 768,
+  "height": 512,
+  "steps": 28,
+  "guidance_scale": 8.5
+}
+```
+
+Response
+
+```json
+{
+  "type": "task",
+  "task_id": "4f8c0c8a-2f5b-4f8a-bb2d-6b5a3f0a0e8e",
+  "status": "pending",
+  "message": "Task queued successfully"
+}
+```
+
+### image_to_image
+
+Request
+
+```json
+{
+  "image_url": "https://example.com/input.jpg",
+  "prompt": "turn the photo into watercolor style",
+  "model": "flux",
+  "strength": 0.7
+}
+```
+
+Response
+
+```json
+{
+  "type": "task",
+  "task_id": "0c2a1c1b-955f-4a8d-9b2a-2dd2f1b9ad10",
+  "status": "pending"
+}
+```
+
+### inpainting
+
+Request
+
+```json
+{
+  "image_url": "https://example.com/photo.jpg",
+  "mask_url": "https://example.com/mask.png",
+  "prompt": "replace masked area with a wooden door",
+  "model": "flux"
+}
+```
+
+Response
+
+```json
+{
+  "type": "task",
+  "task_id": "8a1b2c3d-4e5f-6789-aaaa-bbbbccccdddd",
+  "status": "pending"
+}
+```
+
+### replace_background
+
+Request
+
+```json
+{
+  "image_url": "https://example.com/subject.png",
+  "prompt": "sunset beach background",
+  "model": "flux"
+}
+```
+
+Response
+
+```json
+{
+  "type": "task",
+  "task_id": "c3a41050-7b5f-46a8-9e2f-7a4b5c6d7e8f",
+  "status": "pending"
+}
+```
+
+### text_to_speech
+
+Request
+
+```json
+{
+  "text": "Welcome to Qolaba!",
+  "voice": "alloy",
+  "model": "tts-1",
+  "response_format": "mp3",
+  "speed": 1.0
+}
+```
+
+Response
+
+```json
+{
+  "type": "task",
+  "task_id": "a1b2c3d4-e5f6-7890-abcd-ef0123456789",
+  "status": "pending"
+}
+```
+
+### chat
+
+Request
+
+```json
+{
+  "message": "Explain model context protocol in one sentence.",
+  "model": "gpt-4",
+  "temperature": 0.5
+}
+```
+
+Response
+
+```json
+{
+  "type": "content",
+  "content_type": "json",
+  "content": {
+    "messages": [
+      {"role": "assistant", "content": "The Model Context Protocol is ..."}
+    ]
+  },
+  "metadata": {"request_id": "..."}
+}
+```
+
+### store_file_in_vector_db
+
+Request
+
+```json
+{
+  "file_url": "https://example.com/manual.pdf",
+  "collection_name": "docs",
+  "metadata": {"source": "kb"},
+  "chunk_size": 800,
+  "chunk_overlap": 100
+}
+```
+
+Response
+
+```json
+{
+  "type": "task",
+  "task_id": "fe12ab34-56cd-78ef-90ab-cdef12345678",
+  "status": "pending"
+}
+```
+
+### get_task_status
+
+Request
+
+```json
+{
+  "task_id": "fe12ab34-56cd-78ef-90ab-cdef12345678"
+}
+```
+
+Response (Beispiel: completed)
+
+```json
+{
+  "type": "task_status",
+  "task_id": "fe12ab34-56cd-78ef-90ab-cdef12345678",
+  "status": "completed",
+  "progress": 1.0,
+  "result": {
+    "url": "https://cdn.example.com/output.png"
+  },
+  "created_at": "2025-09-13T10:20:00Z",
+  "updated_at": "2025-09-13T10:22:10Z"
+}
+```
+
+Hinweis: Fehlerfälle liefern `type: "error"` mit `error_code`, `message`, `details`.
+
+

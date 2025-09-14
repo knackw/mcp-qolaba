@@ -221,11 +221,11 @@ async def test_multi_client(tmp_path: Path):
     config = {
         "mcpServers": {
             "test_1": {
-                "command": "python",
+                "command": sys.executable,
                 "args": [str(script_path)],
             },
             "test_2": {
-                "command": "python",
+                "command": sys.executable,
                 "args": [str(script_path)],
             },
         }
@@ -263,11 +263,11 @@ async def test_multi_client_parallel_calls(tmp_path: Path):
     config = {
         "mcpServers": {
             "test_1": {
-                "command": "python",
+                "command": sys.executable,
                 "args": [str(script_path)],
             },
             "test_2": {
-                "command": "python",
+                "command": sys.executable,
                 "args": [str(script_path)],
             },
         }
@@ -317,11 +317,11 @@ async def test_multi_client_lifespan(tmp_path: Path):
         config = {
             "mcpServers": {
                 "test_1": {
-                    "command": "python",
+                    "command": sys.executable,
                     "args": [str(script_path)],
                 },
                 "test_2": {
-                    "command": "python",
+                    "command": sys.executable,
                     "args": [str(script_path)],
                 },
             }
@@ -378,11 +378,11 @@ async def test_multi_client_force_close(tmp_path: Path):
     config = {
         "mcpServers": {
             "test_1": {
-                "command": "python",
+                "command": sys.executable,
                 "args": [str(script_path)],
             },
             "test_2": {
-                "command": "python",
+                "command": sys.executable,
                 "args": [str(script_path)],
             },
         }
@@ -492,11 +492,11 @@ async def test_multi_client_with_logging(tmp_path: Path, caplog):
     config = {
         "mcpServers": {
             "test_server": {
-                "command": "python",
+                "command": sys.executable,
                 "args": [str(script_path)],
             },
             "test_server_2": {
-                "command": "python",
+                "command": sys.executable,
                 "args": [str(script_path)],
             },
         }
@@ -554,7 +554,7 @@ async def test_multi_client_with_transforms(tmp_path: Path):
     config = {
         "mcpServers": {
             "test_1": {
-                "command": "python",
+                "command": sys.executable,
                 "args": [str(script_path)],
                 "tools": {
                     "add": {
@@ -567,7 +567,7 @@ async def test_multi_client_with_transforms(tmp_path: Path):
                 },
             },
             "test_2": {
-                "command": "python",
+                "command": sys.executable,
                 "args": [str(script_path)],
             },
         }
@@ -608,7 +608,7 @@ async def test_canonical_multi_client_with_transforms(tmp_path: Path):
     config = CanonicalMCPConfig(
         mcpServers={
             "test_1": {
-                "command": "python",
+                "command": sys.executable,
                 "args": [str(script_path)],
                 "tools": {  # <--- Will be ignored as it's not valid for a canonical MCPConfig
                     "add": {
@@ -621,7 +621,7 @@ async def test_canonical_multi_client_with_transforms(tmp_path: Path):
                 },
             },
             "test_2": {
-                "command": "python",
+                "command": sys.executable,
                 "args": [str(script_path)],
             },
         }  # type: ignore[reportUnknownArgumentType]
@@ -663,7 +663,7 @@ async def test_multi_client_transform_with_filtering(tmp_path: Path):
     config = {
         "mcpServers": {
             "test_1": {
-                "command": "python",
+                "command": sys.executable,
                 "args": [str(script_path)],
                 "tools": {
                     "add": {
@@ -678,7 +678,7 @@ async def test_multi_client_transform_with_filtering(tmp_path: Path):
                 "include_tags": ["keep"],
             },
             "test_2": {
-                "command": "python",
+                "command": sys.executable,
                 "args": [str(script_path)],
             },
         }
@@ -721,11 +721,11 @@ async def test_multi_client_with_elicitation(tmp_path: Path):
     config = {
         "mcpServers": {
             "test_server": {
-                "command": "python",
+                "command": sys.executable,
                 "args": [str(script_path)],
             },
             "test_server_2": {
-                "command": "python",
+                "command": sys.executable,
                 "args": [str(script_path)],
             },
         }

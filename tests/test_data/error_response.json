@@ -1,0 +1,16 @@
+{
+  "error_code": "VALIDATION_ERROR",
+  "message": "Invalid input parameters provided",
+  "category": "validation",
+  "severity": "medium",
+  "http_status": 400,
+  "details": {
+    "field": "prompt",
+    "value": "",
+    "constraint": "required",
+    "message": "Prompt cannot be empty"
+  },
+  "request_id": "req_12345_error",
+  "timestamp": "2025-09-13T19:45:00Z",
+  "documentation_url": "https://docs.qolaba.ai/api-platform/errors#validation_error"
+}

@@ -9,38 +9,60 @@
 
 Dieser Implementierungsplan für einen MCP-Server basiert auf dem fastmcp-Framework und fokussiert sich auf vier Kernbereiche: Grundlegende Projekteinrichtung mit robustem Konfigurationsmanagement, Entwicklung eines stabilen API-Client-Moduls mit umfassender Fehlerbehandlung, Implementierung qualitätsgesicherter Tests und automatisierter Deployment-Prozesse. Besondere Aufmerksamkeit erfordern die sichere Verwaltung von API-Schlüsseln, die Implementierung von Retry-Mechanismen für externe API-Calls und die Containerisierung für produktive Deployment-Szenarien.
 
+## API Dokumentation
+https://docs.qolaba.ai/api-platform
+https://docs.qolaba.ai/api-platform/text-to-image
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/text-to-image
+https://docs.qolaba.ai/api-platform/image-to-image
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/image-to-image
+https://docs.qolaba.ai/api-platform/inpainting
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/inpainting
+https://docs.qolaba.ai/api-platform/replace-background
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/replace-background
+https://docs.qolaba.ai/api-platform/text-to-speech
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/text-to-speech
+https://docs.qolaba.ai/api-platform/task-status
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/get-status
+https://docs.qolaba.ai/api-platform/streamchat
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/streamchat
+https://docs.qolaba.ai/api-platform/chat
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/chat-api
+https://docs.qolaba.ai/api-platform/store-file-in-vector-database
+https://app.theneo.io/api-runner/qolaba/ml-apis/api-reference/store-file-in-vector-database
+https://docs.qolaba.ai/api-platform/pricing
+
 ## 🔴 Kritische Priorität (Woche 1)
 
 ### Grundlagen & Einrichtung
-- [ ] **SETUP-001**: Git-Repository initialisieren und grundlegende Verzeichnisstruktur erstellen
-- [ ] **SETUP-002**: Python Virtual Environment einrichten und aktivieren
-- [ ] **SETUP-003**: fastmcp-Framework installieren und Starter-Projekt klonen
-- [ ] **SETUP-004**: Basis-Abhängigkeiten definieren und requirements.txt erstellen
-- [ ] **SETUP-005**: Umgebungsvariablen-Management mit .env-Datei implementieren
-- [ ] **SETUP-006**: Sichere Konfigurationsklasse für API-Credentials entwickeln
-- [ ] **SETUP-007**: Grundlegende Projektstruktur mit Modulen und Packages anlegen
+- [x] **SETUP-001**: Git-Repository initialisieren und grundlegende Verzeichnisstruktur erstellen
+- [x] **SETUP-002**: Python Virtual Environment einrichten und aktivieren
+- [x] **SETUP-003**: fastmcp-Framework installieren und Starter-Projekt klonen
+- [x] **SETUP-004**: Basis-Abhängigkeiten definieren und requirements.txt erstellen
+- [x] **SETUP-005**: Umgebungsvariablen-Management mit .env-Datei implementieren
+- [x] **SETUP-006**: Sichere Konfigurationsklasse für API-Credentials entwickeln
+- [x] **SETUP-007**: Grundlegende Projektstruktur mit Modulen und Packages anlegen
 
 ### API-Integration Grundlagen
-- [ ] **API-001**: Externe API-Dokumentation analysieren und Endpunkte dokumentieren
-- [ ] **API-002**: Authentifizierungsmechanismus (API-Key/OAuth) identifizieren und planen
+- [x] **API-001**: Externe API-Dokumentation analysieren und Endpunkte dokumentieren
+- [x] **API-002**: Authentifizierungsmechanismus (API-Key/OAuth) identifizieren und planen
 
 ## 🟡 Hohe Priorität (Woche 2-3)
 
 ### Kernfunktionalität & API-Integration
-- [ ] **API-003**: HTTP-Client-Modul mit aiohttp/httpx implementieren
-- [ ] **API-004**: API-Client-Klasse mit Request/Response-Handling entwickeln
-- [ ] **API-005**: Retry-Mechanismus und Exponential Backoff für API-Calls implementieren
-- [ ] **API-006**: Rate-Limiting und Request-Throttling einbauen
-- [ ] **API-007**: Umfassende Fehlerbehandlung für HTTP-Status-Codes und Timeouts
+- [x] **API-003**: HTTP-Client-Modul mit aiohttp/httpx implementieren
+- [x] **API-004**: API-Client-Klasse mit Request/Response-Handling entwickeln
+- [x] **API-005**: Retry-Mechanismus und Exponential Backoff für API-Calls implementieren
+- [x] **API-006**: Rate-Limiting und Request-Throttling einbauen
+- [x] **API-007**: Umfassende Fehlerbehandlung für HTTP-Status-Codes und Timeouts
 
 ### MCP-Integration
-- [ ] **MCP-001**: MCP-Command-Handler-Struktur in fastmcp definieren
-- [ ] **MCP-002**: Request-Validation mit Pydantic-Modellen implementieren
-- [ ] **MCP-003**: Response-Serialisierung und JSON-Schema-Validierung entwickeln
-- [ ] **MCP-004**: Hauptgeschäftslogik zwischen MCP und API-Client verbinden
+- [x] **MCP-001**: MCP-Command-Handler-Struktur in fastmcp definieren
+- [x] **MCP-002**: Request-Validation mit Pydantic-Modellen implementieren
+- [x] **MCP-003**: Response-Serialisierung und JSON-Schema-Validierung entwickeln
+- [x] **MCP-004**: Hauptgeschäftslogik zwischen MCP und API-Client verbinden
 
 ### Datenverarbeitung
-- [ ] **DATA-001**: Pydantic-Datenmodelle für API-Requests und Responses erstellen
+- [x] **DATA-001**: Pydantic-Datenmodelle für API-Requests und Responses erstellen
 - [ ] **DATA-002**: Datentyp-Konvertierung und -Validierung implementieren
 - [ ] **DATA-003**: Error-Response-Modelle und Exception-Handling definieren
 

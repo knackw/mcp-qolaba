@@ -1,28 +1,39 @@
-## Description
-<!-- 
-Please provide a clear and concise description of the changes made in this pull request.
-
-Using AI to generate code? Please include a note in the description with which AI tool you used.
--->
-
-**Contributors Checklist**
+## Beschreibung
 <!--
-NOTE:
-1. You must create an issue in the repository before making a Pull Request.
-2. You must not create a Pull Request for an issue that is already assigned to someone else.
+Bitte geben Sie eine klare und präzise Beschreibung der Änderungen in diesem Pull Request an.
 
-If you do not follow these steps, your Pull Request will be closed without review.
+Haben Sie AI zur Code-Generierung verwendet? Bitte erwähnen Sie, welches AI-Tool verwendet wurde.
 -->
 
-- [ ] My change is related to issue #(issue number)
-- [ ] I have followed the repository's development workflow
-- [ ] I have tested my changes manually and by adding relevant tests
-- [ ] I have performed all required documentation updates
+## Typ der Änderung
+- [ ] 🐛 Bug-Fix
+- [ ] ✨ Neues Feature
+- [ ] 🔧 Refactoring
+- [ ] 📚 Dokumentation
+- [ ] 🧪 Tests
+- [ ] 🚀 Performance-Verbesserung
 
-**Review Checklist**
-<!-- Your Pull Request will not be reviewed if tests are failing, you have not self-reviewed your changes, or you have not checked all of the following: -->
+## Projektbezug
+- [ ] Bezieht sich auf Aufgabe aus [PLAN.md](../docs/PLAN.md): **[AUFGABEN-ID]**
+- [ ] Folgt dem [Projektplan](../docs/PROJEKTPLAN.md)
+- [ ] Ist in der aktuellen Projektphase eingeplant
 
-- [ ] I have self-reviewed my changes
-- [ ] My Pull Request is ready for review
+**Checkliste für Beitragende**
+- [ ] Code folgt den Projekt-Standards (PEP 8, Type Hints)
+- [ ] Alle neuen Funktionen haben Tests geschrieben
+- [ ] Tests laufen erfolgreich (`pytest`)
+- [ ] Code-Qualität ist geprüft (`black`, `flake8`, `mypy`)
+- [ ] Dokumentation ist aktualisiert
+- [ ] Sichere Umgebungsvariablen-Nutzung
+
+**Sicherheitsprüfung**
+- [ ] Keine API-Schlüssel oder Credentials im Code
+- [ ] Sensible Daten nur über Umgebungsvariablen
+- [ ] Robuste Fehlerbehandlung implementiert
+
+**Review-Checkliste**
+- [ ] Ich habe meine Änderungen selbst überprüft
+- [ ] Pull Request ist bereit für Review
+- [ ] Alle Tests sind erfolgreich
 
 ---

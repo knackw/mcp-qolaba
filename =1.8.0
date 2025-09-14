@@ -1,0 +1,10 @@
+Defaulting to user installation because normal site-packages is not writeable
+Collecting mypy
+  Downloading mypy-1.14.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl.metadata (2.1 kB)
+Requirement already satisfied: typing-extensions>=4.6.0 in /home/sonja2008/.local/lib/python3.8/site-packages (from mypy) (4.13.2)
+Requirement already satisfied: mypy-extensions>=1.0.0 in /home/sonja2008/.local/lib/python3.8/site-packages (from mypy) (1.1.0)
+Requirement already satisfied: tomli>=1.1.0 in /home/sonja2008/.local/lib/python3.8/site-packages (from mypy) (2.2.1)
+Downloading mypy-1.14.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl (12.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.8/12.8 MB 1.5 MB/s eta 0:00:00
+Installing collected packages: mypy
+Successfully installed mypy-1.14.1
